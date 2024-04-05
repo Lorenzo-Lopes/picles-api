@@ -14,6 +14,7 @@ export default class UpdateShelterControlerInput {
     @IsNotEmpty()
     @IsNumberString()
     phone: string;
+    @IsOptional()
     @IsNotEmpty()
     @IsEmail()
     email: string;
