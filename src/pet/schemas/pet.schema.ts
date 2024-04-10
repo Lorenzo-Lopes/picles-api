@@ -20,11 +20,11 @@ gender:string;
 @Prop({required:true})
 bio:string;
 
-@Prop({required:true ,default:null})
+@Prop({required:false ,default:null})
 photo:string
 
 @Prop({required:true})
-createdAT:Date;
+createdAt:Date;
 @Prop({required:true})
 updatedAt:Date;
 }
