@@ -17,30 +17,29 @@ import DeletePetByIdUseCase from './usecases/delete.pet.by.id.usecase';
 
 @Module({
   controllers: [PetController],
-  
+
   imports: [MongooseModule.forFeature([{ name: Pet.name, schema: PetSchema }])],
-  providers:[
+  providers: [
     {
       provide: PetTokens.createPetUseCase,
       useClass: CreatePetUseCase,
     },
     {
       provide: PetTokens.petRepository,
-      useClass: PetRepository
+      useClass: PetRepository,
     },
     {
       provide: PetTokens.getPetByIdUseCase,
-      useClass: GetPetByIdUseCase
+      useClass: GetPetByIdUseCase,
     },
     {
-      provide:PetTokens.updatePetByIdUseCase,
-      useClass:UpdatePetByIdUseCase
+      provide: PetTokens.updatePetByIdUseCase,
+      useClass: UpdatePetByIdUseCase,
     },
     {
-      provide:PetTokens.deletePetByIdUseCase,
-      useClass:DeletePetByIdUseCase
-    }
-
-  ]
+      provide: PetTokens.deletePetByIdUseCase,
+      useClass: DeletePetByIdUseCase,
+    },
+  ],
 })
 export class PetModule {}

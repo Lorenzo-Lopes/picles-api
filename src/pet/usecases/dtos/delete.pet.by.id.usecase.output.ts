@@ -1,3 +1,3 @@
-export default class DeletePetByIdUseCaseOutput{
-    message: string ='Sucessfully Deleted'
+export default class DeletePetByIdUseCaseOutput {
+  message: string = 'Sucessfully Deleted';
 }

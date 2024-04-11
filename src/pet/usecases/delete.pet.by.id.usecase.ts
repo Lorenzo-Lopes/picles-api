@@ -1,37 +1,11 @@
-// import { IUseCase } from "src/domain/iusecase.interface";
-// import DeletePetByIdUseCaseInput from "./dtos/delete.pet.by.id.usecase.input";
-// import DeletePetByIdUseCaseOutput from "./dtos/delete.pet.by.id.usecase.output";
-// import { Pet } from "../schemas/pet.schema";
-// import { Injectable } from "@nestjs/common";
-// @Injectable()
-// export default class DeletePetByIdUseCase implements IUseCase<DeletePetByIdUseCaseInput,DeletePetByIdUseCaseOutput>{
-
-
-
-
-
-
-
-//     private async getPetById(id:string):Promise<Pet>
-//     {
-//         try{
-//             return await this.petRepository.getById(id)
-//         }catch(error){
-//             return null
-//         }
-//     }
-  
-// }
-
- import { IUseCase } from "src/domain/iusecase.interface";
- import DeletePetByIdUseCaseInput from "./dtos/delete.pet.by.id.usecase.input";
- import DeletePetByIdUseCaseOutput from "./dtos/delete.pet.by.id.usecase.output";
- import { Pet } from "../schemas/pet.schema";
- import { Inject, Injectable } from "@nestjs/common";
-import PetNotFoundError from "src/domain/erros/pet.not.found.error";
-import PetTokens from "../pet.tokens";
-import IPetRepository from "../pet.repository";
-
+import { IUseCase } from 'src/domain/iusecase.interface';
+import DeletePetByIdUseCaseInput from './dtos/delete.pet.by.id.usecase.input';
+import DeletePetByIdUseCaseOutput from './dtos/delete.pet.by.id.usecase.output';
+import { Pet } from '../schemas/pet.schema';
+import { Inject, Injectable } from '@nestjs/common';
+import PetNotFoundError from 'src/domain/errors/pet.not.found.error';
+import PetTokens from '../pet.tokens';
+import IPetRepository from '../pet.repository';
 @Injectable()
 export default class DeletePetByIdUseCase
   implements IUseCase<DeletePetByIdUseCaseInput, DeletePetByIdUseCaseOutput>
@@ -46,7 +20,7 @@ export default class DeletePetByIdUseCase
   ): Promise<DeletePetByIdUseCaseOutput> {
     const pet = await this.findPetById(input.id);
 
-    if (pet == null) {
+    if (!pet) {
       throw new PetNotFoundError();
     }
 
@@ -58,7 +32,7 @@ export default class DeletePetByIdUseCase
   private async findPetById(id: string): Promise<Pet> {
     try {
       return await this.petRepository.getById(id);
-    } catch {
+    } catch (error) {
       return null;
     }
   }

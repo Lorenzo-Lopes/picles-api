@@ -1,11 +1,10 @@
-export default class UpdateShelterDetailsUseCaseInput{
-    name: string;
-    whatsApp:string;
-    email:string;
-    phone:string;
+export default class UpdateShelterDetailsUseCaseInput {
+  name: string;
+  whatsApp: string;
+  email: string;
+  phone: string;
 
-    constructor (data:Partial<UpdateShelterDetailsUseCaseInput>){
-        Object.assign(this, data);
-    }
-    
+  constructor(data: Partial<UpdateShelterDetailsUseCaseInput>) {
+    Object.assign(this, data);
+  }
 }
