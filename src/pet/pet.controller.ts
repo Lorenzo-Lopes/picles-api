@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Inject, Param, Patch, Post, Put } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Inject, Param, Patch, Post, Put } from '@nestjs/common';
 import CreatePetControllerInput from './dtos/create.pet.controller.input';
 import { IUseCase } from 'src/domain/iusecase.interface';
 import CreatePetUseCase from './usecases/create.pet.usecase';
@@ -10,6 +10,9 @@ import GetPetByIdUseCaseOutput from './usecases/dtos/get.pet.by.id.usecase.outpu
 import UpdatePetControllerInput from './dtos/update.pet.controller.input';
 import UpdatePetByIdUsecaseInput from './usecases/dtos/update.pet.by.id.usecase.input';
 import UpdatePetByIdUseCaseOutput from './usecases/dtos/update.pet.by.id.usecase.output';
+import DeletePetByIdUseCaseOutput from './usecases/dtos/delete.pet.by.id.usecase.output';
+import UpdatePetByIdUseCaseInput from './usecases/dtos/update.pet.by.id.usecase.input';
+import DeletePetByIdUseCaseInput from './usecases/dtos/delete.pet.by.id.usecase.input';
 
 @Controller('pet')
 export class PetController {
@@ -21,7 +24,10 @@ export class PetController {
     private readonly getPetByIdUseCase: IUseCase<GetPetByIdUseCaseInput,GetPetByIdUseCaseOutput>
 
     @Inject(PetTokens.updatePetByIdUseCase) 
-    private readonly updatePetByIdUseCase: IUseCase<UpdatePetByIdUsecaseInput, UpdatePetByIdUseCaseOutput>
+    private readonly updatePetByIdUseCase: IUseCase<UpdatePetByIdUseCaseInput, UpdatePetByIdUseCaseOutput>
+
+    @Inject(PetTokens.deletePetByIdUseCase) 
+    private readonly deletePetByIdUseCase: IUseCase<GetPetByIdUseCaseInput, DeletePetByIdUseCaseOutput>
     
     
     @Get(':id')
@@ -40,12 +46,45 @@ export class PetController {
             throw new BadRequestException(JSON.parse(error.message))
         }
     }
-    @Put(':id')
-    async updatePet(@Body()input:UpdatePetControllerInput,@Param('id')id:string):Promise<UpdatePetByIdUsecaseInput>{
-        const useCaseInput = new UpdatePetByIdUsecaseInput({
-            ...input,
-            id
-        })
-       return await this.updatePetByIdUseCase.run(useCaseInput)
+     @Put(':id')
+     async updatePet(@Body() input:UpdatePetControllerInput, @Param('id') id:string): Promise<UpdatePetByIdUseCaseOutput> {
+
+         try{
+             const useCaseInput = new UpdatePetByIdUsecaseInput({
+                  ...input,
+                     id 
+                 })  
+             return await this.updatePetByIdUseCase.run(useCaseInput) 
+         }catch(error){
+             throw new BadRequestException(JSON.parse(error.message))
+         }
+    
+     }
+
+    //  @Put(':id')
+    //  async updatePet(@Body() input: UpdatePetControllerInput, @Param('id') id: string): Promise<UpdatePetByIdUseCaseOutput> {
+ 
+    //      try {
+    //          const useCaseInput = new UpdatePetByIdUseCaseInput({
+    //              ...input,
+    //              id
+    //          })
+    //          return await this.updatePetByIdUseCase.run(useCaseInput)
+    //      } catch (error) {
+    //          throw new BadRequestException(JSON.parse(error.message))
+    //      }
+    //  }
+
+
+    @Delete(':id')
+    async deletePet(@Param('id')id:string){
+        try{ 
+            const useCaseInput = new DeletePetByIdUseCaseInput({id})
+            return await this.deletePetByIdUseCase.run(useCaseInput)
+        }catch(error){
+            throw new BadRequestException(JSON.parse(error.message))
+
+        }
+        
     }
 }
