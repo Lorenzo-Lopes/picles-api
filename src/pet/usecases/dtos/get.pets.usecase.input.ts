@@ -3,7 +3,7 @@ export default class GetPetsUseCaseInput{
   size?:string;
   gender?:string;
   page: number;
-  itensPerPage:number;
+  itemsPerPage:number;
 
   constructor(data: Partial<GetPetsUseCaseInput>){
     Object.assign(this,data)

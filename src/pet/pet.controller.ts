@@ -33,6 +33,7 @@ import multerConfig from 'src/conifg/multerConfig';
 import UpdatePetPhotoByIdUseCaseInput from './usecases/dtos/update.pet.photo.by.id.usecase.input';
 import UpdatePetPhotoByIdUseCaseOutput from './usecases/dtos/update.pet.photo.by.id.usecase.output';
 import GetPetsUseCaseInput from './usecases/dtos/get.pets.usecase.input';
+import GetPetsUseCaseOutput from './usecases/dtos/get.pets.usecase.output';
 
 @Controller('pet')
 export class PetController {
@@ -47,6 +48,9 @@ export class PetController {
     GetPetByIdUseCaseInput,
     GetPetByIdUseCaseOutput
   >;
+  @Inject(PetTokens.getPetsUseCase)
+  private readonly getPetsUseCase: IUseCase< GetPetsUseCaseInput, GetPetsUseCaseOutput>;
+
 
   @Inject(PetTokens.updatePetPhotoByIdUseCase)
   private readonly updatePetPhotoByIdUseCase: IUseCase<
@@ -94,7 +98,7 @@ export class PetController {
     @Query('gender') gender?: string,
     @Query('page') page?: string,
     @Query('itemsPerPage') itensPerPage?: string,
-  ) {
+  ):Promise<GetPetsUseCaseOutput> {
     const FIRT_PAGE = 1;
     const DEFAULT_ITENS_PER_PAGE = 10;
     const useCaseInput = new GetPetsUseCaseInput({
@@ -102,9 +106,10 @@ export class PetController {
       size: !!size ? size :null,
       gender: !!gender ? gender :null,
       page: !!page ? parseInt(page) :FIRT_PAGE,
-      itensPerPage: !!itensPerPage ? parseInt(itensPerPage) :DEFAULT_ITENS_PER_PAGE,
+      itemsPerPage: !!itensPerPage ? parseInt(itensPerPage) :DEFAULT_ITENS_PER_PAGE,
 
     })
+    return await this.getPetsUseCase.run(useCaseInput)
   }
 
   @Put(':id')
