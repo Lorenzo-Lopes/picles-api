@@ -27,7 +27,7 @@ import DeletePetByIdUseCaseOutput from './usecases/dtos/delete.pet.by.id.usecase
 import UpdatePetByIdUseCaseInput from './usecases/dtos/update.pet.by.id.usecase.input';
 import DeletePetByIdUseCaseInput from './usecases/dtos/delete.pet.by.id.usecase.input';
 import { FileInterceptor } from '@nestjs/platform-express';
-import multer from 'multer';
+//import multer from 'multer';
 import multerConfig from 'src/conifg/multerConfig';
 import UpdatePetPhotoByIdUseCaseInput from './usecases/dtos/update.pet.photo.by.id.usecase.input';
 import UpdatePetPhotoByIdUseCaseOutput from './usecases/dtos/update.pet.photo.by.id.usecase.output';
@@ -41,10 +41,16 @@ export class PetController {
   >;
 
   @Inject(PetTokens.getPetByIdUseCase)
-    private readonly getPetByIdUseCase: IUseCase<GetPetByIdUseCaseInput,GetPetByIdUseCaseOutput>;
+  private readonly getPetByIdUseCase: IUseCase<
+    GetPetByIdUseCaseInput,
+    GetPetByIdUseCaseOutput
+  >;
 
   @Inject(PetTokens.updatePetPhotoByIdUseCase)
-    private readonly updatePetPhotoByIdUseCase: IUseCase<UpdatePetPhotoByIdUseCaseInput,UpdatePetPhotoByIdUseCaseOutput>;
+  private readonly updatePetPhotoByIdUseCase: IUseCase<
+    UpdatePetPhotoByIdUseCaseInput,
+    UpdatePetPhotoByIdUseCaseOutput
+  >;
 
   @Inject(PetTokens.updatePetByIdUseCase)
   private readonly updatePetByIdUseCase: IUseCase<
@@ -95,20 +101,6 @@ export class PetController {
     }
   }
 
-  //  @Put(':id')
-  //  async updatePet(@Body() input: UpdatePetControllerInput, @Param('id') id: string): Promise<UpdatePetByIdUseCaseOutput> {
-
-  //      try {
-  //          const useCaseInput = new UpdatePetByIdUseCaseInput({
-  //              ...input,
-  //              id
-  //          })
-  //          return await this.updatePetByIdUseCase.run(useCaseInput)
-  //      } catch (error) {
-  //          throw new BadRequestException(JSON.parse(error.message))
-  //      }
-  //  }
-
   @Delete(':id')
   async deletePet(@Param('id') id: string) {
     try {
@@ -121,14 +113,14 @@ export class PetController {
 
   @Patch(':id/photo')
   @UseInterceptors(FileInterceptor('photo', multerConfig))
- async updatePhoto(
+  async updatePhoto(
     @UploadedFile() photo: Express.Multer.File,
     @Param('id') id: string,
   ) {
     const useCaseInput = new UpdatePetPhotoByIdUseCaseInput({
       id,
-      photoPath: photo.path
-    })
-    return await this.updatePetPhotoByIdUseCase.run(useCaseInput)
+      photoPath: photo.path,
+    });
+    return await this.updatePetPhotoByIdUseCase.run(useCaseInput);
   }
 }
