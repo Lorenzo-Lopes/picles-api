@@ -6,8 +6,11 @@ import {
   Get,
   Inject,
   Param,
+  Patch,
   Post,
   Put,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import CreatePetControllerInput from './dtos/create.pet.controller.input';
 import { IUseCase } from 'src/domain/iusecase.interface';
@@ -23,6 +26,11 @@ import UpdatePetByIdUseCaseOutput from './usecases/dtos/update.pet.by.id.usecase
 import DeletePetByIdUseCaseOutput from './usecases/dtos/delete.pet.by.id.usecase.output';
 import UpdatePetByIdUseCaseInput from './usecases/dtos/update.pet.by.id.usecase.input';
 import DeletePetByIdUseCaseInput from './usecases/dtos/delete.pet.by.id.usecase.input';
+import { FileInterceptor } from '@nestjs/platform-express';
+import multer from 'multer';
+import multerConfig from 'src/conifg/multerConfig';
+import UpdatePetPhotoByIdUseCaseInput from './usecases/dtos/update.pet.photo.by.id.usecase.input';
+import UpdatePetPhotoByIdUseCaseOutput from './usecases/dtos/update.pet.photo.by.id.usecase.output';
 
 @Controller('pet')
 export class PetController {
@@ -33,10 +41,10 @@ export class PetController {
   >;
 
   @Inject(PetTokens.getPetByIdUseCase)
-  private readonly getPetByIdUseCase: IUseCase<
-    GetPetByIdUseCaseInput,
-    GetPetByIdUseCaseOutput
-  >;
+    private readonly getPetByIdUseCase: IUseCase<GetPetByIdUseCaseInput,GetPetByIdUseCaseOutput>;
+
+  @Inject(PetTokens.updatePetPhotoByIdUseCase)
+    private readonly updatePetPhotoByIdUseCase: IUseCase<UpdatePetPhotoByIdUseCaseInput,UpdatePetPhotoByIdUseCaseOutput>;
 
   @Inject(PetTokens.updatePetByIdUseCase)
   private readonly updatePetByIdUseCase: IUseCase<
@@ -109,5 +117,18 @@ export class PetController {
     } catch (error) {
       throw new BadRequestException(JSON.parse(error.message));
     }
+  }
+
+  @Patch(':id/photo')
+  @UseInterceptors(FileInterceptor('photo', multerConfig))
+ async updatePhoto(
+    @UploadedFile() photo: Express.Multer.File,
+    @Param('id') id: string,
+  ) {
+    const useCaseInput = new UpdatePetPhotoByIdUseCaseInput({
+      id,
+      photoPath: photo.path
+    })
+    return await this.updatePetPhotoByIdUseCase.run(useCaseInput)
   }
 }
