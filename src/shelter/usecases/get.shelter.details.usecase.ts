@@ -18,8 +18,8 @@ export default class GetShelterDetailsUseCase
     return new getShelterDetailsUseCaseOutput({
       shelterName: shelter.name,
       shelterEmail: shelter.email,
-      shelterPhone: shelter.whatsApp,
-      shelterWhatsapp: shelter.phone,
+      shelterPhone: shelter.phone,
+      shelterWhatsApp: shelter.whatsApp,
       createAt: shelter.createdAt,
       updateAt: shelter.updatedAt,
     });

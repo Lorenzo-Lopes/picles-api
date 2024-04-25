@@ -9,7 +9,7 @@ import UpdateShelterDetailsUseCaseInput from './usecases/dtos/update.shelter.det
 export class ShelterController {
   // Injection de tokens
   @Inject(ShelterTokens.getShelterDetailsUseCase)
-  private readonly GetShelterDetailsUseCase: IUseCase<
+  private readonly getShelterDetailsUseCase: IUseCase<
     null,
     getShelterDetailsUseCaseOutput
   >;
@@ -21,7 +21,7 @@ export class ShelterController {
 
   @Get()
   async getShelterDetails(): Promise<getShelterDetailsUseCaseOutput> {
-    return await this.GetShelterDetailsUseCase.run(null);
+    return await this.getShelterDetailsUseCase.run(null);
   }
 
   @Put()
