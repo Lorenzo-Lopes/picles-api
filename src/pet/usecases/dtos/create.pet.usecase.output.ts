@@ -6,6 +6,7 @@ export default class CreatePetUseCaseOutput {
   gender: string;
   bio: string;
   photo: string;
+  photos: string[];
   createdAt: Date;
   updatedAt: Date;
 

@@ -11,6 +11,7 @@ import {
   Put,
   Query,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
 import CreatePetControllerInput from './dtos/create.pet.controller.input';
@@ -27,13 +28,15 @@ import UpdatePetByIdUseCaseOutput from './usecases/dtos/update.pet.by.id.usecase
 import DeletePetByIdUseCaseOutput from './usecases/dtos/delete.pet.by.id.usecase.output';
 import UpdatePetByIdUseCaseInput from './usecases/dtos/update.pet.by.id.usecase.input';
 import DeletePetByIdUseCaseInput from './usecases/dtos/delete.pet.by.id.usecase.input';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 //import multer from 'multer';
 import multerConfig from 'src/conifg/multerConfig';
 import UpdatePetPhotoByIdUseCaseInput from './usecases/dtos/update.pet.photo.by.id.usecase.input';
 import UpdatePetPhotoByIdUseCaseOutput from './usecases/dtos/update.pet.photo.by.id.usecase.output';
 import GetPetsUseCaseInput from './usecases/dtos/get.pets.usecase.input';
 import GetPetsUseCaseOutput from './usecases/dtos/get.pets.usecase.output';
+import UpdatePetManyPhotosByIdUseCaseInput from './usecases/dtos/update.pet.many.photos.usecase.input';
+import UpdatePetManyPhotosByIdUseCaseOutput from './usecases/dtos/update.pet.many.photos.usecase.output';
 
 @Controller('pet')
 export class PetController {
@@ -56,6 +59,11 @@ export class PetController {
   private readonly updatePetPhotoByIdUseCase: IUseCase<
     UpdatePetPhotoByIdUseCaseInput,
     UpdatePetPhotoByIdUseCaseOutput
+    >;
+  @Inject(PetTokens.updatePetManyPhotosByIdUseCase)
+  private readonly updatePetManyPhotosByIdUseCase: IUseCase<
+    UpdatePetManyPhotosByIdUseCaseInput,
+    UpdatePetManyPhotosByIdUseCaseOutput
   >;
 
   @Inject(PetTokens.updatePetByIdUseCase)
@@ -138,7 +146,7 @@ export class PetController {
     }
   }
 
-  @Patch(':id/photo')
+  @Put(':id/photo')
   @UseInterceptors(FileInterceptor('photo', multerConfig))
   async updatePhoto(
     @UploadedFile() photo: Express.Multer.File,
@@ -150,4 +158,21 @@ export class PetController {
     });
     return await this.updatePetPhotoByIdUseCase.run(useCaseInput);
   }
+
+
+  @Put(':id/photos')
+  @UseInterceptors(FileFieldsInterceptor([{name:'photos'}], multerConfig ) )
+  async updateManyPhoto(
+    @UploadedFiles() photos: { photos?: Express.Multer.File[] },
+    // @UploadedFiles() photos:Array<Express.Multer.File>,
+    @Param('id') id: string,
+  ) {
+    console.log(photos)
+    const useCaseInput = new UpdatePetManyPhotosByIdUseCaseInput({
+      id,
+      photoPath: photos.photos.map(item=>item.path),
+    });
+    return await this.updatePetManyPhotosByIdUseCase.run(useCaseInput);
+  }
+
 }

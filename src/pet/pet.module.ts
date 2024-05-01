@@ -18,6 +18,7 @@ import FileService from 'src/file.service';
 import AppTokens from 'src/app.tokens';
 import UpdatePetPhotoByIdUseCase from './usecases/update.photo.pet.by.id.usecase';
 import GetPetsUseCase from './usecases/get.pets.usecase';
+import UpdatePetManyPhotosByIdUseCase from './usecases/update.pet.many.photos.usecase';
 
 @Module({
   controllers: [PetController],
@@ -51,6 +52,10 @@ import GetPetsUseCase from './usecases/get.pets.usecase';
     {
       provide: PetTokens.updatePetPhotoByIdUseCase,
       useClass: UpdatePetPhotoByIdUseCase,
+    },
+    {
+      provide: PetTokens.updatePetManyPhotosByIdUseCase,
+      useClass: UpdatePetManyPhotosByIdUseCase,
     },
     {
       provide: PetTokens.getPetsUseCase,

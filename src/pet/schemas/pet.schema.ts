@@ -22,6 +22,9 @@ export class Pet {
 
   @Prop({ required: false, default: null })
   photo: string;
+  @Prop({ required: false, default: null })
+  photos: string[];
+
 
   @Prop({ required: true })
   createdAt: Date;

@@ -4,9 +4,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import GetPetsUseCaseInput from './usecases/dtos/get.pets.usecase.input';
 import FindByFilterAndTotal from './usecases/dtos/find.by.filter.and.total';
+import IPetRepository from './interfaces/pet.repository.interface';
 
 @Injectable()
-export default class IPetRepository implements IPetRepository {
+export default class PetRepository implements IPetRepository {
   constructor(
     @InjectModel(Pet.name)
     private readonly petModel: Model<Pet>,
@@ -39,7 +40,7 @@ export default class IPetRepository implements IPetRepository {
     await this.petModel.findByIdAndDelete(id);
   }
 
-  async findByFIlter(input: GetPetsUseCaseInput): Promise<FindByFilterAndTotal>{
+  async findByFilter(input: GetPetsUseCaseInput): Promise<FindByFilterAndTotal>{
     const FIRT_PAGE=1;
     const skip = input.page==FIRT_PAGE ? 0 : input.itemsPerPage *(input.page -1);
     let query = this.petModel.find();

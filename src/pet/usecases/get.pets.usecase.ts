@@ -22,7 +22,7 @@ export default class GetPetsUseCase implements IUseCase<GetPetsUseCaseInput, Get
 
 
   async run(input: GetPetsUseCaseInput): Promise<GetPetsUseCaseOutput>{
-    const queryResponse = await this.petRepository.findByFIlter(input);
+    const queryResponse = await this.petRepository.findByFilter(input);
     const petResponseList: PetResponse[] = [];
 
     for (const currentPet of queryResponse.items){
