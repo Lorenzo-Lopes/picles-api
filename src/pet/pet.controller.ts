@@ -161,16 +161,16 @@ export class PetController {
 
 
   @Put(':id/photos')
-  @UseInterceptors(FileFieldsInterceptor([{name:'photos'}], multerConfig ) )
+  @UseInterceptors(FilesInterceptor('photos',900, multerConfig ) )
   async updateManyPhoto(
-    @UploadedFiles() photos: { photos?: Express.Multer.File[] },
-    // @UploadedFiles() photos:Array<Express.Multer.File>,
+    // @UploadedFiles() photos: Express.Multer.File[],
+    @UploadedFiles() photos:Array<Express.Multer.File>,
     @Param('id') id: string,
   ) {
     console.log(photos)
     const useCaseInput = new UpdatePetManyPhotosByIdUseCaseInput({
       id,
-      photoPath: photos.photos.map(item=>item.path),
+      photoPath: photos.map(item=>item.path),
     });
     return await this.updatePetManyPhotosByIdUseCase.run(useCaseInput);
   }
