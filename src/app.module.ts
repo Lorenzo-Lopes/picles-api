@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { MulterModule } from '@nestjs/platform-express';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ShelterModule } from './shelter/shelter.module';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+
 import { PetModule } from './pet/pet.module';
-import { MulterModule } from '@nestjs/platform-express';
+import { ShelterModule } from './shelter/shelter.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -24,6 +26,7 @@ import { MulterModule } from '@nestjs/platform-express';
     }),
     ShelterModule,
     PetModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
