@@ -3,6 +3,7 @@ import IUserRepository from "./interfaces/user.repository.interface";
 import { InjectModel } from "@nestjs/mongoose";
 import { User } from "./schema/user.schema";
 import { Model } from "mongoose";
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export default class UserRepository implements IUserRepository {
@@ -10,6 +11,7 @@ export default class UserRepository implements IUserRepository {
     @InjectModel(User.name)
     private readonly userModel: Model<User>,
   ) {}
+
 
   async getById(id: string): Promise<User> {
     return await this.userModel.findById(id);
@@ -34,4 +36,7 @@ export default class UserRepository implements IUserRepository {
       },
     );
   }
+
+
+
 }

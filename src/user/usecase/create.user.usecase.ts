@@ -5,6 +5,7 @@ import { Inject } from "@nestjs/common";
 import UserTokens from "../user.tokens";
 import IPetRepository from "src/pet/interfaces/pet.repository.interface";
 import IUserRepository from "../interfaces/user.repository.interface";
+import encrypt from "src/services/encrypt";
 
 export default class CreateUserUseCase implements IUseCase<CreateUserUseCaseInput, CreateUserUseCaseOutput>{
   constructor(
@@ -13,7 +14,8 @@ export default class CreateUserUseCase implements IUseCase<CreateUserUseCaseInpu
     ){}
 
     async run (input:CreateUserUseCaseInput):Promise<CreateUserUseCaseOutput>{
-      const newUser = await this.userRepository.create(input)
+      const passwordEncrypted = await encrypt(input.password)
+      const newUser = await this.userRepository.create({...input, password:passwordEncrypted.password, salt: passwordEncrypted.salt})
       console.log("aaaa", newUser)
       return new CreateUserUseCaseOutput({
 

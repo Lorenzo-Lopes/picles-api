@@ -6,7 +6,7 @@ export default class CreateUserUseCaseInput {
   @IsEmail()
   email: string;
   adress: string;
-  password: string;
+  password:string;
   type: string;
 
 

@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { PetModule } from './pet/pet.module';
 import { ShelterModule } from './shelter/shelter.module';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UserModule } from './user/user.module';
     ShelterModule,
     PetModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
