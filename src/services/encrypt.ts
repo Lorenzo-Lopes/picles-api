@@ -7,11 +7,11 @@ export interface IEncrypt{
   salt:string
 }
 
-export default async function encrypt(password:string):Promise<IEncrypt>{
+export default async function encrypt(password:string, hashSalt?:string):Promise<IEncrypt>{
 
   const iv = randomBytes(16);
   // console.log("iv",iv)
-  const salt = await bcrypt.genSalt();
+  const salt = hashSalt ? hashSalt:  await bcrypt.genSalt();
   const hashPassword = await bcrypt.hash(password, salt);
 
   return ({
