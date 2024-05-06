@@ -13,10 +13,7 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '..', '../public'),
-    //   serverRoot: '/public',
-    // }),
+   
     MulterModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],

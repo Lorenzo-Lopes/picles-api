@@ -25,5 +25,5 @@ export default class UpdateShelterControlerInput {
   @IsNotEmpty()
   @IsEmail()
   email: string;
-  //teste
+  
 }

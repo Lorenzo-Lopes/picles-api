@@ -29,7 +29,7 @@ import DeletePetByIdUseCaseOutput from './usecases/dtos/delete.pet.by.id.usecase
 import UpdatePetByIdUseCaseInput from './usecases/dtos/update.pet.by.id.usecase.input';
 import DeletePetByIdUseCaseInput from './usecases/dtos/delete.pet.by.id.usecase.input';
 import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-//import multer from 'multer';
+
 import multerConfig from 'src/conifg/multerConfig';
 import UpdatePetPhotoByIdUseCaseInput from './usecases/dtos/update.pet.photo.by.id.usecase.input';
 import UpdatePetPhotoByIdUseCaseOutput from './usecases/dtos/update.pet.photo.by.id.usecase.output';
@@ -154,7 +154,7 @@ export class PetController {
   ) {
     const useCaseInput = new UpdatePetPhotoByIdUseCaseInput({
       id,
-      photoPath: photo.path,
+      photoPath: photo.path
     });
     return await this.updatePetPhotoByIdUseCase.run(useCaseInput);
   }
@@ -163,14 +163,13 @@ export class PetController {
   @Put(':id/photos')
   @UseInterceptors(FilesInterceptor('photos',900, multerConfig ) )
   async updateManyPhoto(
-    // @UploadedFiles() photos: Express.Multer.File[],
     @UploadedFiles() photos:Array<Express.Multer.File>,
     @Param('id') id: string,
   ) {
     console.log(photos)
     const useCaseInput = new UpdatePetManyPhotosByIdUseCaseInput({
       id,
-      photoPath: photos.map(item=>item.path),
+      photosPath: photos.map(item=>photos.path.push(photos.path)),
     });
     return await this.updatePetManyPhotosByIdUseCase.run(useCaseInput);
   }

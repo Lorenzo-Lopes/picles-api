@@ -33,18 +33,13 @@ export default class UpdatePetManyPhotosByIdUseCase
     }
     await this.petRepository.updateById({
       _id: input.id,
-      photos: input.photoPath,
+      photos: input.photosPath,
 
     });
-    // const photos = input.photoPath.forEach(async item => {
-    //   return(
-    //     await this.fileService.readFile(item)
-    //   )
-    // })
-    // const photo = await this.fileService.readFile(input.);
+
     const photos: string[] = [];
 
-    for (const photo of input.photoPath){
+    for (const photo of input.photosPath){
 
         const photoInBase64 = await this.fileService.readFile(photo)
         const photoBase64 = photoInBase64.toString('base64')

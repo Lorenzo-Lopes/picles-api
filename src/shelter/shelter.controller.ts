@@ -7,7 +7,6 @@ import UpdateShelterDetailsUseCaseInput from './usecases/dtos/update.shelter.det
 
 @Controller('shelter')
 export class ShelterController {
-  // Injection de tokens
   @Inject(ShelterTokens.getShelterDetailsUseCase)
   private readonly getShelterDetailsUseCase: IUseCase<
     null,

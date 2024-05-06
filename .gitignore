@@ -3,7 +3,7 @@
 /node_modules
 /upload
 .env
-
+/fotos
 # Logs
 logs
 *.log
